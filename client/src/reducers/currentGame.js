@@ -8,10 +8,10 @@ export const rollDice = () => {
     const newDice = dice.map( (d, i) => {
       if (keep.includes(i))
         return d
-      return Math.floor(Math.random() * 6) = 1
+      return Math.floor(Math.random() * 6) + 1
     })
 
-    dispatch({ type: ROLL_DICE, dice: newDice})
+    dispatch({ type: ROLL_DICE, dice: newDice })
   }
 }
 
@@ -20,16 +20,16 @@ export const toggleKept = (i) => {
     const { keep } = getState().currentGame
     let updated
 
-    if (keep.inclues(i))
-      updated = keep.filter( d => d !==i )
-    else 
-      updated
+    if (keep.includes(i))
+      updated = keep.filter( d => d !== i )
+    else
+      updated = [...keep, i]
 
     dispatch({ type: TOGGLE_KEPT, keep: updated })
   }
 }
 
-export default ( 
+export default (
   state = {
     roll: 0,
     dice: [...new Array(5)],
@@ -44,12 +44,13 @@ export default (
         dice: action.dice,
         roll: state.roll + 1
       }
-    case TOGGLE_KEPT:
-      return{
-        ...state, 
+    case TOGGLE_KEPT: 
+      return {
+        ...state,
         keep: action.keep
       }
     default:
       return state
   }
 }
+
