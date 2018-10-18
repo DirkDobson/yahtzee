@@ -10,7 +10,7 @@ const enhancers = compose(
 const store = createStore(rootReducer, {}, enhancers )
 
 if (module.hot) {
-  module.hot.accept('./reducer/', () => {
+  module.hot.accept('./reducers/', () => {
     const nextRoot = require('./reducers/index').default
     store.replaceReducer(nextRoot)
   })

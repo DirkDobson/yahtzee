@@ -11,7 +11,10 @@ const checkEndGame = (scores) => {
       if (score === null)
         gameOver = false
     })
-    return gameOver
+    if (gameOver) 
+      dispatch( postScore(this.calcScores(scores)) )
+      
+      return gameOver
 }
 
 const calcScores = (scores) => {
