@@ -31,6 +31,8 @@ export const staticScore = (type, dice) => {
       return validateHighStraight(dice) ? 40 : 0
     case 'Yahtzee':
       return validateYahtzee(dice) ? 50 : 0 
+    default:
+      return 0
   }
 }
 
