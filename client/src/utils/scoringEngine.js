@@ -1,19 +1,19 @@
 export const singles = (value, dice) => {
-  //[1,2,1,1,1,3]
-  //1
-  return addDice.filter( d => d === value )
+  //[1,2,1,1,3]
+  // 1
+  return addDice(dice.filter( d => d === value ))
 }
 
 export const addAllDice = (type, dice) => {
-  const totals = []
+  let totals = []
 
   switch(type) {
     case 'Three Of A Kind':
       totals = validateThreeOfAKind(dice) ? dice : []
-    break
+      break
     case 'Four Of A Kind':
-    totals = validateFourOfAKind(dice) ? dice : []
-    break
+      totals = validateFourOfAKind(dice) ? dice : []
+      break
     default:
       totals = dice
 
@@ -30,43 +30,46 @@ export const staticScore = (type, dice) => {
     case 'High Straight':
       return validateHighStraight(dice) ? 40 : 0
     case 'Yahtzee':
-      return validateYahtzee(dice) ? 50 : 0 
+      return validateYahtzee(dice) ? 50 : 0
     default:
       return 0
   }
 }
 
 const addDice = (dice) => {
-  return dice.reduce( (total, val) => {
+  return dice.reduce( (total, val) =>  { 
     return total + val
-  }, 0)
+  },0)
 }
 
 const validateFullHouse = (dice) => {
+  //[1,2,2,1,1]
+  //[[1,1,1], [2,2]]
   let hasTwo = false
   let hasThree = false
   const split = splitArray(dice)
   for ( let arr of split.newArray ) {
     if (arr.length === 3)
       hasThree = true
-    if (arr.length ===2)
+    if (arr.length === 2)
       hasTwo = true
   }
-  return hasTwo && hasThree 
+
+  return hasTwo && hasThree
 }
 
 const validateLowStraight = (dice) => {
   const count = findSeq(dice.sort())
   return count >= 4
-
 }
 
 const validateHighStraight = (dice) => {
   const count = findSeq(dice.sort())
   return count === 5
 }
+
 const validateYahtzee = (dice) => {
-  let matches = 0 
+  let matches = 0
   const val = dice[0]
   matches = dice.filter( d => d === val ).length
   return matches === 5
@@ -75,52 +78,56 @@ const validateYahtzee = (dice) => {
 const validateThreeOfAKind = (dice) => {
   let hasScore = false
   const split = splitArray(dice)
-  for ( let arr of split.newArray) {
+  for ( let arr of split.newArray ) {
     if (arr.length >= 3 )
-    hasScore = true
+      hasScore = true
   }
+
   return hasScore
 }
 
 const validateFourOfAKind = (dice) => {
   let hasScore = false
   const split = splitArray(dice)
-  for ( let arr of split.newArray) {
+  for ( let arr of split.newArray ) {
     if (arr.length >= 4 )
-    hasScore = true
+      hasScore = true
   }
+
   return hasScore
 }
 
 const splitArray = (dice) => {
   let split = dice.sort().reduce( (acc, val) => {
-    let inner 
-    if (acc.previous !== val ) {
-      inner = [] 
+    let inner
+    if (acc.previous !== val) {
+      inner = []
     } else {
       inner = acc.newArray.pop()
     }
+
     inner.push(val)
     acc.previous = val
     acc.newArray.push(inner)
     return acc
-  }, {
-    previous: null, 
-    newArray: []
+    }, {
+      previous: null,
+      newArray: []
   })
+
   return split
 }
 
 const findSeq = (dice) => {
   let uniq = [...new Set(dice)]
-  let count = 1 
+  let count = 1
   for (let i = 0; i < uniq.length; i++) {
     if (uniq[i + 1] - 1 === uniq[i]) {
-    ++count
-  } else {
-    break
+      ++count
+    } else {
+      break
+    }
   }
-}
 
   return count
 }
