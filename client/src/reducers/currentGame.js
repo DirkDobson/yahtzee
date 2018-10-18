@@ -1,9 +1,8 @@
-import { CommentActions } from "semantic-ui-react";
-
 const ROLL_DICE = 'ROLL_DICE'
 const TOGGLE_KEPT = 'TOGGLE_KEPT'
 const RESET_ROLL = 'RESET_ROLL'
 const UPDATE_SCORES = 'UPDATE_SCORES'
+const NEW_GAME = 'NEW_GAME'
 
 const scores = [
   { section: 'upper', name: 'Ones', score: null, value: 1 },
@@ -21,6 +20,9 @@ const scores = [
   { section: 'lower', name: 'Chance', score: null, addAll: true }
 ];
 
+export const newGame = () => {
+  return {type: NEW_GAME}
+}
 export const resetRoll = () => {
   return { type: RESET_ROLL }
 }
@@ -67,6 +69,13 @@ export default (
   action
 ) => {
   switch(action.type) {
+    case NEW_GAME:
+      return {
+        roll: 0,
+        dice: [...new Array(5)],
+        keep: [],
+        scores: scores.map( s => {return {...s, score: null} })
+      }
     case RESET_ROLL:
       return {
         ...state,
